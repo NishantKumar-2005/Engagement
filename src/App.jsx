@@ -419,7 +419,7 @@ function VideoSection() {
           padding: 10, animation: "softGlow 5s infinite",
         }}>
           <video
-            src="src/assets/Animation_Of_Ring_Exchange_Created.mp4"
+            src="/Animation_Of_Ring_Exchange_Created.mp4"
             autoPlay loop muted playsInline
             style={{ width: "100%", borderRadius: 18, display: "block" }}
           />
@@ -585,7 +585,7 @@ export default function EngagementInvitation() {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    const a = new Audio("src/assets/kamhunt-smooth-ac-guitar-loop-93bpm-137706.mp3");
+    const a = new Audio("/kamhunt-smooth-ac-guitar-loop-93bpm-137706.mp3");
     a.loop = true; a.volume = 0.25;
     audioRef.current = a;
     return () => { a.pause(); a.src = ""; };
