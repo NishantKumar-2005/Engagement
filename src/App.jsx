@@ -206,19 +206,12 @@ function Petals() {
 }
 
 /* ─────────────────────── MUSIC BUTTON ─────────────────────── */
-function MusicBtn() {
-  const [on, setOn] = useState(false);
-  const audio = useRef(null);
-  useEffect(() => {
-    const a = new Audio("https://cdn.pixabay.com/audio/2024/11/04/audio_a9cac30498.mp3");
-    a.loop = true; a.volume = 0.25;
-    audio.current = a;
-    return () => { a.pause(); a.src = ""; };
-  }, []);
+function MusicBtn({ audioRef }) {
+  const [on, setOn] = useState(true);
   const toggle = () => {
-    if (!audio.current) return;
-    on ? audio.current.pause() : audio.current.play().catch(() => {});
-    setOn(!on);
+    if (!audioRef.current) return;
+    if (on) { audioRef.current.pause(); setOn(false); }
+    else { audioRef.current.play().catch(() => {}); setOn(true); }
   };
   return (
     <button onClick={toggle} title={on ? "Pause" : "Play Music"} style={{
@@ -588,6 +581,47 @@ function Footer() {
 
 /* ─────────────────────── MAIN APP ─────────────────────── */
 export default function EngagementInvitation() {
+  const [entered, setEntered] = useState(false);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    const a = new Audio("src/assets/kamhunt-smooth-ac-guitar-loop-93bpm-137706.mp3");
+    a.loop = true; a.volume = 0.25;
+    audioRef.current = a;
+    return () => { a.pause(); a.src = ""; };
+  }, []);
+
+  const enter = () => {
+    setEntered(true);
+    audioRef.current?.play().catch(() => {});
+  };
+
+  if (!entered) return (
+    <div onClick={enter} style={{
+      position: "fixed", inset: 0, zIndex: 9999,
+      background: `linear-gradient(135deg, ${C.lavLight}, ${C.blushSoft})`,
+      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+      cursor: "pointer",
+    }}>
+      <div style={{ animation: "heartbeat 2s infinite", fontSize: 52, marginBottom: 24 }}>💍</div>
+      <h1 style={{
+        fontFamily: "'Playfair Display',serif", fontSize: "clamp(28px,6vw,52px)",
+        color: C.dark, marginBottom: 10, textAlign: "center",
+      }}>Sanjay &amp; Shikha</h1>
+      <p style={{
+        fontFamily: "'Cormorant Garamond',serif", fontSize: "clamp(16px,2.5vw,22px)",
+        fontStyle: "italic", color: C.muted, marginBottom: 40, textAlign: "center",
+      }}>You&apos;re invited to our engagement</p>
+      <div style={{
+        padding: "14px 40px", borderRadius: 50,
+        background: `linear-gradient(135deg, ${C.lavDeep}, ${C.rosegold})`,
+        color: "#fff", fontFamily: "'Montserrat',sans-serif", fontSize: 14,
+        fontWeight: 600, letterSpacing: 2, textTransform: "uppercase",
+        boxShadow: "0 8px 28px rgba(169,139,186,.35)",
+      }}>Tap to Enter</div>
+    </div>
+  );
+
   return (
     <div style={{ minHeight: "100vh", background: C.pearl }}>
       <Petals />
@@ -596,7 +630,7 @@ export default function EngagementInvitation() {
       <FamilySection />
       <EventDetails />
       <Footer />
-      <MusicBtn />
+      <MusicBtn audioRef={audioRef} />
     </div>
   );
 }
