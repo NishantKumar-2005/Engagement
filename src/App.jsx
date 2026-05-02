@@ -510,6 +510,7 @@ function EventCard({ ev, i }) {
         </div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, color: C.muted, fontSize: 14 }}>
           <span>📍</span><span>{ev.venue}</span>
+          
         </div>
       </div>
     </div>
@@ -520,7 +521,7 @@ function EventCard({ ev, i }) {
 function EventDetails() {
   const r1 = useReveal();
   const details = [
-    { icon: "💎", label: "Engagement Ceremony", date: "July 26, 2026", time: "6:00 PM", venue: "New Delhi, India" },
+    { icon: "💎", label: "Engagement Ceremony", date: "July 26, 2026", time: "6:00 PM", venue: "The Gracious Banquets, Naraina" },
   ];
   return (
     <section style={{ padding: "100px 24px" }}>
@@ -545,6 +546,8 @@ function EventDetails() {
           gap: 28,
         }}>
           {details.map((ev, i) => <EventCard key={i} ev={ev} i={i}/>)}
+
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.529234716717!2d77.14429187614427!3d28.64386818356467!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d03ba43e6a433%3A0xa4edfdcd4e7193b!2sThe%20Gracious%20Banquets%2C%20Naraina%2C%20Delhi!5e0!3m2!1sen!2sin!4v1777697978146!5m2!1sen!2sin" style={{ border: 0, width: "100%", height: "min(450px, 56vw)", minHeight: 240, borderRadius: 16 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
         </div>
       </div>
     </section>
