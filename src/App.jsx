@@ -586,6 +586,7 @@ function Footer() {
 export default function EngagementInvitation() {
   const [entered, setEntered] = useState(false);
   const audioRef = useRef(null);
+  const rafRef = useRef(null);
 
   useEffect(() => {
     const a = new Audio("/kamhunt-smooth-ac-guitar-loop-93bpm-137706.mp3");
@@ -593,6 +594,39 @@ export default function EngagementInvitation() {
     audioRef.current = a;
     return () => { a.pause(); a.src = ""; };
   }, []);
+
+  const stopScroll = () => {
+    if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
+  };
+
+  useEffect(() => {
+    if (!entered) return;
+
+    let last = null;
+    const speed = 100; // px per second
+    const step = (ts) => {
+      if (last === null) last = ts;
+      const delta = ts - last; last = ts;
+      document.documentElement.scrollTop += (speed * delta) / 1000;
+      if (document.documentElement.scrollTop + window.innerHeight < document.documentElement.scrollHeight) {
+        rafRef.current = requestAnimationFrame(step);
+      }
+    };
+
+    const tid = setTimeout(() => { rafRef.current = requestAnimationFrame(step); }, 1600);
+
+    window.addEventListener("wheel", stopScroll, { passive: true });
+    window.addEventListener("touchstart", stopScroll, { passive: true });
+    window.addEventListener("keydown", stopScroll);
+
+    return () => {
+      clearTimeout(tid);
+      stopScroll();
+      window.removeEventListener("wheel", stopScroll);
+      window.removeEventListener("touchstart", stopScroll);
+      window.removeEventListener("keydown", stopScroll);
+    };
+  }, [entered]);
 
   const enter = () => {
     setEntered(true);
